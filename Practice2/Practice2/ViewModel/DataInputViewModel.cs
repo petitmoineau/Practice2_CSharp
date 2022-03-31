@@ -5,14 +5,14 @@ using System.Runtime.CompilerServices;
 using Practice2.Tools;
 using System.Windows;
 using Practice2.View;
+using Practice2.Exceptions;
 using System.Globalization;
 
 namespace Practice2.ViewModel
 {
-    class DataInputViewModel : INotifyPropertyChanged
+    class DataInputViewModel 
     {
         Person _person = new Person(null, null, null);
-        static CultureInfo ci = new CultureInfo("en-US");
         EmailValidationRule evr = new EmailValidationRule();
         private RelayCommand<object> _proceed;
 
@@ -103,8 +103,23 @@ namespace Practice2.ViewModel
 
         public void DoProceed()
         {
-            if (_person.Age < 0 || _person.Age > 135)
-                MessageBox.Show($"Date is wrong!");
+            try
+            {
+                CheckDate();
+            }
+            catch
+            {
+                Console.WriteLine("Not ok");
+            }
+            
+        }
+
+        private void CheckDate()
+        {
+            if (_person.Age < 0)
+                throw new NotBornException("Date is wrong! Person isn`t born yet");
+            else if (_person.Age > 135)
+                throw new TooOldException("Date is wrong! Person is already dead");
             else
             {
                 if (_person.IsBirthday)
@@ -116,16 +131,9 @@ namespace Practice2.ViewModel
             }
         }
         private bool CanExecute(object obj)
-        {            
-            return !String.IsNullOrWhiteSpace(_person.Name) && !String.IsNullOrWhiteSpace(_person.Surname)
-                && evr.Validate(_person.Email, ci).IsValid && _person.Birthday != default;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+            return !String.IsNullOrWhiteSpace(_person.Name) && !String.IsNullOrWhiteSpace(_person.Surname)
+                    && evr.Validate(_person.Email, new CultureInfo("en-US")).IsValid && _person.Birthday != default;
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Practice2.Tools
             Console.WriteLine("CountAge func started");
             age = ((currentDate.Month - birthDate.Month) < 0) ? currentDate.Year - birthDate.Year - 1 :
                ((currentDate.Day - birthDate.Day) < 0 ? (currentDate.Year - birthDate.Year - 1) : (currentDate.Year - birthDate.Year));
-           // Thread.Sleep(10000);
+           
             Console.WriteLine("CountAge func ended");
         }
         public static void CountChineseSign(DateTime dt, out string chineseSign)
