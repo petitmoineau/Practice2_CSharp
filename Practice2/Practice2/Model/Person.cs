@@ -47,27 +47,16 @@ namespace Practice2.Model
             set
             {
                 _birthday = value.Date;
-                Thread threadAge = new Thread(() => CountTools.CountAge(currentDate, Birthday, out _age));
-                threadAge.Start();
 
-                Thread.Sleep(200);
+                CountTools.CountAll(currentDate, Birthday);
 
-                if (!threadAge.IsAlive)
-                {
-                    if (Age < 18) IsAdult = false;
-                    else IsAdult = true;
+                IsBirthday = CountTools.isBirthday;
+                Age = CountTools.age;
+                SunSign = CountTools.sunSign;
+                ChineseSign = CountTools.chineseSign;
 
-                    IsBirthday = CountTools.CountIsBirthday(currentDate, Birthday);
-
-                    Thread threadSunSign = new Thread(() => CountTools.CountSunSign(Birthday, out _sunSign));
-                    Thread threadChineseSign = new Thread(() => CountTools.CountChineseSign(Birthday, out _chineseSign));
-
-                    threadSunSign.Start();
-                    threadChineseSign.Start();
-
-                    if (threadSunSign.IsAlive || threadChineseSign.IsAlive)
-                        Thread.Sleep(400);
-                }
+                if (Age < 18) IsAdult = false;
+                else IsAdult = true;
             }
         }
         public string Email { get => _email; set => _email = value; }

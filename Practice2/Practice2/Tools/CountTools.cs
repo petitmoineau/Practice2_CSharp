@@ -1,26 +1,76 @@
 ﻿using System;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace Practice2.Tools
 {
     public class CountTools
     {
-        public static bool CountIsBirthday(DateTime currentDate, DateTime birthDate)
+        private static DateTime currentDate;
+        private static DateTime birthDate;
+        public static bool isBirthday;
+        public static int age;
+        public static string chineseSign;
+        public static string sunSign;
+
+        //i tried to do this:
+        /*public static void CountIsBirthday(DateTime _currentDate, DateTime _birthDate, out bool isBirthday)
+                {
+                    currentDate = _currentDate;
+                    birthDate = _birthDate;
+                    isBirthday = CountIsBirthdayAsync().Result;
+
+                }
+                private static bool CountIsBirthday()
+                {
+                    return ((currentDate.Month - birthDate.Month) == 0) && ((currentDate.Day - birthDate.Day) == 0);
+                }
+
+                private static async Task<bool> CountIsBirthdayAsync()
+                {
+                    var isBirthday = await Task.Run(() => CountIsBirthday());
+                    return isBirthday;
+                }*/
+        //and the program runs infinitely:(
+        public static async void CountAll(DateTime _currentDate, DateTime _birthDate)
         {
-            return ((currentDate.Month - birthDate.Month) == 0) && ((currentDate.Day - birthDate.Day) == 0);
+            currentDate = _currentDate;
+            birthDate = _birthDate;
+            Task task1 = CountIsBirthdayAsync();//the way you showed it on lecture didn`t work out so this is the only option i found to make it work async :(
+            Task task2 = CountAgeAsync();//sorry(
+            Task task4 = CountSunSignAsync();
+            Task task3 = CountChineseSignAsync();
+            
+
+            await task1;
+            await task2;
+            await task3;
+            await task4;
+
+            Task.Delay(1000).Wait();
         }
-        public static void CountAge(DateTime currentDate, DateTime birthDate, out int age)
+        private static void CountIsBirthday()
         {
-            Console.WriteLine("CountAge func started");
+            isBirthday = ((currentDate.Month - birthDate.Month) == 0) && ((currentDate.Day - birthDate.Day) == 0);
+        }
+
+        private static async Task CountIsBirthdayAsync()
+        {
+            await Task.Run(() => CountIsBirthday());
+        }
+
+        private static void CountAge()
+        {
             age = ((currentDate.Month - birthDate.Month) < 0) ? currentDate.Year - birthDate.Year - 1 :
-               ((currentDate.Day - birthDate.Day) < 0 ? (currentDate.Year - birthDate.Year - 1) : (currentDate.Year - birthDate.Year));
-           
-            Console.WriteLine("CountAge func ended");
+                ((currentDate.Month == birthDate.Month) ? ((currentDate.Day - birthDate.Day) < 0 ? (currentDate.Year - birthDate.Year - 1) : (currentDate.Year - birthDate.Year)) : (currentDate.Year - birthDate.Year));
         }
-        public static void CountChineseSign(DateTime dt, out string chineseSign)
+
+        private static async Task CountAgeAsync()
         {
-            Console.WriteLine("CountChineseSign func started");
-            switch ((dt.Year - 4) % 12)
+            await Task.Run(() => CountAge());
+        }
+        private static void CountChineseSign()
+        {
+            switch ((birthDate.Year - 4) % 12)
             {
                 case 0:
                     chineseSign = "Rat";
@@ -61,90 +111,96 @@ namespace Practice2.Tools
 
                     
             }
-            Console.WriteLine("CountChineseSign func ended");
         }
 
-        public static void CountSunSign(DateTime dt, out string sunSign)
+        private static async Task CountChineseSignAsync()
         {
-            Console.WriteLine("CountSunSign func started");
-            switch (dt.Month)
+            await Task.Run(() => CountChineseSign());
+        }
+
+        private static void CountSunSign()
+        {
+            switch (birthDate.Month)
             {
                 case 1:
-                    if (dt.Day < 21)
+                    if (birthDate.Day < 21)
                         sunSign = "Capricorn";
                     else
                         sunSign = "Aquarius";
                     break;
                 case 2:
-                    if (dt.Day < 20)
+                    if (birthDate.Day < 20)
                         sunSign = "Aquarius";
                     else
                         sunSign = "Pisces";
                     break;
                 case 3:
-                    if (dt.Day < 21)
+                    if (birthDate.Day < 21)
                         sunSign = "Pisces";
                     else
                         sunSign = "Aries";
                     break;
                 case 4:
-                    if (dt.Day < 21)
+                    if (birthDate.Day < 21)
                         sunSign = "Aries";
                     else
                         sunSign = "Taurus";
                     break;
                 case 5:
-                    if (dt.Day < 22)
+                    if (birthDate.Day < 22)
                         sunSign = "Taurus";
                     else
                         sunSign = "Gemini";
                     break;
                 case 6:
-                    if (dt.Day < 22)
+                    if (birthDate.Day < 22)
                         sunSign = "Gemini";
                     else
                         sunSign = "Cancer";
                     break;
                 case 7:
-                    if (dt.Day < 23)
+                    if (birthDate.Day < 23)
                         sunSign = "Cancer";
                     else
                         sunSign = "Leo";
                     break;
                 case 8:
-                    if (dt.Day < 22)
+                    if (birthDate.Day < 22)
                         sunSign = "Leo";
                     else
                         sunSign = "Virgo";
                     break;
                 case 9:
-                    if (dt.Day < 24)
+                    if (birthDate.Day < 24)
                         sunSign = "Virgo";
                     else
                         sunSign = "Libra";
                     break;
                 case 10:
-                    if (dt.Day < 24)
+                    if (birthDate.Day < 24)
                         sunSign = "Libra";
                     else
                         sunSign = "Scorpio";
                     break;
                 case 11:
-                    if (dt.Day < 24)
+                    if (birthDate.Day < 24)
                         sunSign = "Scorpio";
                     else
                         sunSign = "Sagittarius";
                     break;
                 default:
-                    if (dt.Day < 23)
+                    if (birthDate.Day < 23)
                         sunSign = "Sagittarius";
                     else
                         sunSign = "Capricorn";
                     break;
                     
             }
-            //Thread.Sleep(400);
-            Console.WriteLine("CountSunSign func ended");
+        }
+
+        private static async Task CountSunSignAsync()
+        {
+            await Task.Run(() => CountSunSign());
         }
     }
 }
