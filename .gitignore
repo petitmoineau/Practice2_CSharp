@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/Practice2/Practice2/bin
+/Practice2/Practice2/obj
+/.vs/Practice2/v16

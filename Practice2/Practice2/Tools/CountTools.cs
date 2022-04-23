@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Practice2.Tools
@@ -31,8 +32,9 @@ namespace Practice2.Tools
                     return isBirthday;
                 }*/
         //and the program runs infinitely:(
-        public static async void CountAll(DateTime _currentDate, DateTime _birthDate)
+        public static async Task CountAll(DateTime _currentDate, DateTime _birthDate)
         {
+            
             currentDate = _currentDate;
             birthDate = _birthDate;
             Task task1 = CountIsBirthdayAsync();//the way you showed it on lecture didn`t work out so this is the only option i found to make it work async :(
@@ -46,7 +48,6 @@ namespace Practice2.Tools
             await task3;
             await task4;
 
-            Task.Delay(1000).Wait();
         }
         private static void CountIsBirthday()
         {

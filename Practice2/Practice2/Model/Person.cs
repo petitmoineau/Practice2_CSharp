@@ -48,27 +48,19 @@ namespace Practice2.Model
             {
                 _birthday = value.Date;
 
-                CountTools.CountAll(currentDate, Birthday);
-
-                IsBirthday = CountTools.isBirthday;
-                Age = CountTools.age;
-                SunSign = CountTools.sunSign;
-                ChineseSign = CountTools.chineseSign;
-
-                if (Age < 18) IsAdult = false;
-                else IsAdult = true;
+                
             }
         }
         public string Email { get => _email; set => _email = value; }
 
-        public int Age { get => _age; private set => _age = value; }
+        public int Age { get => _age; internal set => _age = value; }
 
-        public bool IsAdult { get => _isAdult; private set => _isAdult = value; }
+        public bool IsAdult { get => _isAdult; internal set => _isAdult = value; }
 
-        public bool IsBirthday { get => _isBirthday; private set => _isBirthday = value; }
+        public bool IsBirthday { get => _isBirthday; internal set => _isBirthday = value; }
 
-        public string SunSign { get => _sunSign; private set => _sunSign = value; }
+        public string SunSign { get => _sunSign; internal set => _sunSign = value; }
 
-        public string ChineseSign { get => _chineseSign; private set => _chineseSign = value; }
+        public string ChineseSign { get => _chineseSign; internal set => _chineseSign = value; }
     }
 }

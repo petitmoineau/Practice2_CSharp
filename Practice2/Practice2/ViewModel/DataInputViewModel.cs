@@ -114,8 +114,20 @@ namespace Practice2.ViewModel
             
         }
 
-        private void CheckDate()
+        private async void CheckDate()
         {
+            await CountTools.CountAll(DateTime.Now, Birthday);
+
+            _person.IsBirthday = CountTools.isBirthday;
+            _person.Age = CountTools.age;
+            _person.SunSign = CountTools.sunSign;
+            _person.ChineseSign = CountTools.chineseSign;
+
+            if (_person.Age < 18) 
+                _person.IsAdult = false;
+            else 
+                _person.IsAdult = true;
+
             if (_person.Age < 0)
                 throw new NotBornException("Date is wrong! Person isn`t born yet");
             else if (_person.Age > 135)
@@ -124,6 +136,8 @@ namespace Practice2.ViewModel
             {
                 if (_person.IsBirthday)
                     MessageBox.Show($"Happy {_person.Age}th birthday!");
+
+
 
                 ShowData _showData = new ShowData();
                 _showData.DataContext = this;
